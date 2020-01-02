@@ -37,10 +37,10 @@ class Navbar extends React.Component{
             <Collapse isOpen={navCollapsible} navbar>
               <Nav className="mr-auto" navbar>
                 <NavItem>
-                  <Link className="nav-link text-success" to="#">Menu</Link>
+                  <Link className="nav-link text-success" to="/menu">Menu</Link>
                 </NavItem>
                 <NavItem>
-                  <Link className="nav-link" to="#">Cart</Link>
+                  <Link className="nav-link" to="/carts">Cart</Link>
                 </NavItem>
                 <UncontrolledDropdown nav inNavbar>
                   <DropdownToggle nav caret>

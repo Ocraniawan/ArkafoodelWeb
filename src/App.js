@@ -7,7 +7,8 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Footer from './components/Footer'
-import Modals from './pages/Modals'
+import Menu from './pages/Menu'
+import Carts from './pages/Carts'
 
 
 class App extends React.Component{
@@ -27,8 +28,11 @@ class App extends React.Component{
           <Route path='/register' exact>
             <Register/>
           </Route>
-          <Route path='/modals' exact>
-            <Modals />
+          <Route path='/menu' exact>
+            <Menu />
+          </Route>
+          <Route path='/carts' exact>
+            <Carts />
           </Route>
         </Switch>
           <div>
