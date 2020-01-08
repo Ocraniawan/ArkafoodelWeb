@@ -9,7 +9,9 @@ import Register from './pages/Register'
 import Footer from './components/Footer'
 import Menu from './pages/Menu'
 import Carts from './pages/Carts'
-
+import Restaurant from './pages/Restaurant'
+import DetailItem from './pages/detailItem'
+import MenuRestaurant from './pages/MenuRestaurant'
 
 class App extends React.Component{
   render(){
@@ -34,6 +36,13 @@ class App extends React.Component{
           <Route path='/carts' exact>
             <Carts />
           </Route>
+          <Route path='/restaurant' exact>
+            <Restaurant />
+          </Route>
+          <Route path='/item/:id_item' exact component={DetailItem} />
+          <Route path='/menurestaurant/:id' exact component={MenuRestaurant} />
+
+          {/* <Route path='/valuation/:item_id' exact component={DetailItem} /> */}
         </Switch>
           <div>
             <Footer />
