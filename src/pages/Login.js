@@ -1,14 +1,31 @@
 import React from 'react'
-
+import Axios from 'axios'
+import Cookie from 'js-cookie'
+import {APP_URL} from '../resources/config'
 import { Container, Row, Col, Button, Label, Input, Form, FormGroup } from 'reactstrap';
 
 class Login extends React.Component{
     constructor (props){
         super(props)
+
+        this.onSubmit = this.onSubmit.bind(this);
+
         this.state = {
+
             username : "",
             password : "",
+
+
         }
+    }
+
+
+    async onSubmit(event){
+      event.preventDefault();
+      const data = await Axios.post(  APP_URL.concat('user/login'),this.state)
+      console.log(data);
+      Cookie.set('token', data.data.auth)
+      window.location = '/'
     }
 
 
@@ -33,11 +50,11 @@ class Login extends React.Component{
             <Input
               type="password"
               value={this.state.password} onChange={(e)=>this.setState({password:e.target.value})}
-            />
+            />  
         </FormGroup>
 
         <FormGroup>
-        <Button size="lg" onClick = {this.Submit} color = 'primary' value = 'submit'>Submit</Button>
+        <Button onClick = {this.onSubmit} type='submit' color = 'primary' value = 'submit'>Submit</Button>
         </FormGroup>
 
         </Form>
@@ -52,3 +69,5 @@ class Login extends React.Component{
 
 }
 export default Login
+
+
