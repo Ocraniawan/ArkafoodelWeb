@@ -1,26 +1,29 @@
 import React from 'react'
+import Axios from 'axios'
+import {APP_URL} from '../resources/config'
 
 import { Container, Row, Col, Button, Label, Input, Form, FormGroup } from 'reactstrap';
 
 class Register extends React.Component{
     constructor (props){
         super(props)
+
+        this.onSubmit = this.onSubmit.bind(this);
+
         this.state = {
             name : "",
             username : "",
-            email : "",
             password : "",
-            show : "",
-
         }
     }
 
 
-    Submit = ()=>{
-        this.setState({show : <span> name : {this.state.name}<br/>
-                                     name : {this.state.username}<br/>
-                                     email: {this.state.email}<br/>
-                                     password: {this.state.email}</span>})
+    async onSubmit (event){
+      event.preventDefault();
+      // console.log(this.state)
+      const data = await Axios.post(APP_URL.concat('user/registuser'),this.state)
+      console.log(data)
+      window.location = '/login'
         }
     
     render(){
@@ -48,35 +51,18 @@ class Register extends React.Component{
             />
         </FormGroup>
 
-        <FormGroup>
-          <Label className="grey-text">Email Address </Label>
-            <Input
-              type="text"
-              placeholder ="Insert Your Email Address"
-              value={this.state.email} onChange={(e)=>this.setState({email:e.target.value})}
-            />
-        </FormGroup>
-
-        <FormGroup>
-          <Label className="grey-text">Confirm Email Address </Label>
-            <Input
-              type="text"
-              placeholder ="Confirm Your Email Address"
-              value={this.state.email} onChange={(e)=>this.setState({email:e.target.value})}
-            />
-        </FormGroup>
 
         <FormGroup>
           <Label className="grey-text">Password </Label>
             <Input
-              type="text"
+              type="password"
               placeholder ="Insert Your Password"
               value={this.state.password} onChange={(e)=>this.setState({password:e.target.value})}
             />
         </FormGroup>
 
         <FormGroup>
-        <Button onClick = {this.Submit} color = 'primary' value = 'submit'>Submit</Button>
+        <Button onClick = {this.onSubmit} type='submit' color = 'primary' value = 'submit'>Submit</Button>
         </FormGroup>
         </Form>
       </Col>

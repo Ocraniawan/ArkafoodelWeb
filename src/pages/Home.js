@@ -19,15 +19,14 @@ class  Home extends React.Component{
     const settings =  {
       autoplay: true,
       dots: true,
-      duration: 100,
+      // duration: 100,
       initialSlide: false,
-      infinite: true,
+      // infinite: true,
     };
     return (
-        <Container>
+        <Container >
       <div>
-        {/* <span>CustomSlider</span> */}
-        <Slider autoplay dots infinite>
+        <Slider {...settings} >
             <div><img src={require('../images/Carousal 1.jpg')} alt=""/></div>
             <div><img src={require('../images/Carousal 2.jpg')} alt="Credit to Alisa Anton on Unsplash"/></div>
             <div><img src={require('../images/Carousal 3.jpg')} alt="Credit to Igor Ovsyannykov on Unsplash"/></div>
