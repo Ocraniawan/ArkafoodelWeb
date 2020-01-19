@@ -35,6 +35,7 @@ class  Home extends React.Component{
             <div><img src={require('../images/Carousal 3.jpg')} alt="Credit to Cristina Gottardi on Unsplash"/></div>
         </Slider>
       </div>
+      <br/><br/>
         </Container>
 
     )

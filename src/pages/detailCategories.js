@@ -1,13 +1,13 @@
 import React from 'react'
-import {connect} from 'react-redux'
-import {getDetailRestaurants} from '../redux/action/restaurant'
 import axios from 'axios'
+import {connect} from 'react-redux'
+import {getCategoryById} from '../redux/action/categories'
 import {APP_URL} from '../resources/config'
 import {Link} from 'react-router-dom'
 
 import {Row, Col, Container, Button, Card, CardHeader, CardDeck} from 'reactstrap'
 
-class MenuRestaurant extends React.Component{
+class DetailCategories extends React.Component{
 constructor(props){
     super(props)
     this.state = {
@@ -19,16 +19,21 @@ constructor(props){
   async componentDidMount(){
       console.log(this.props)
       const {id} = this.props.match.params
-      this.props.dispatch(getDetailRestaurants(id))
+      this.props.dispatch(getCategoryById(id))
+    //   const url = await axios.get(APP_URL.concat(`categories/detail/${id}`))
+    //   const {data} = url
+    //   this.setState({data,isFetched:!this.state.isFetched})
 }
 
     render(){
-
+        // const {isFetched,data} = this.state
         return(
             <Container>
                 <Row>
-                {!this.props.restaurants.isLoading && this.props.restaurants.data.map(v=>(
-                    <CardDeck >
+                {!this.props.categories.isLoading && this.props.categories.data.map(v=>(
+                //     isFetched&&
+                // data.data.map(v=>(
+                    <CardDeck>
                     <Col sm="12" md={{ size: 6, offset: 3 }} key= {v.id_item} className='mt-3' >
                         <Card className='shadow' style = {{backgroundColor: 'dark', height:"430px", width:"300px", borderRadius:'15px' }}>
                             <div className='text-center'>
@@ -68,8 +73,8 @@ constructor(props){
 
 const mapStateToProps = state => {
     return {
-      restaurants: state.restaurants
+      categories: state.categories
     }
   }
   
-  export default connect(mapStateToProps)(MenuRestaurant)
+  export default connect(mapStateToProps)(DetailCategories)

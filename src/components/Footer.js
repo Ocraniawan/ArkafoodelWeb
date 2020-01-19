@@ -17,9 +17,9 @@ class Footer extends React.Component{
             <div className="row text-center d-flex justify-content-center pt-5 mb-3">
         
 
-              <div className="col-md-2 mb-3">
-                <h6 className="text-uppercase font-weight-bold">
-                  <a href="#!">About us</a>
+              <div className="col-md-2 mb-3" >
+                <h6 className="text-uppercase font-weight-bold" >
+                  <a href="#!" style={{color:'#28A745'}}>About us</a>
                 </h6>
               </div>
 
@@ -27,7 +27,7 @@ class Footer extends React.Component{
 
               <div className="col-md-2 mb-3">
                 <h6 className="text-uppercase font-weight-bold">
-                  <a href="#!">Products</a>
+                  <a href="#!" style={{color:'#28A745'}}>Products</a>
                 </h6>
               </div>
 
@@ -35,7 +35,7 @@ class Footer extends React.Component{
 
               <div className="col-md-2 mb-3">
                 <h6 className="text-uppercase font-weight-bold">
-                  <a href="#!">Awards</a>
+                  <a href="#!" style={{color:'#28A745'}}>Awards</a>
                 </h6>
               </div>
 
@@ -43,13 +43,13 @@ class Footer extends React.Component{
 
               <div className="col-md-2 mb-3">
                 <h6 className="text-uppercase font-weight-bold">
-                  <a href="#!">Help</a>
+                  <a href="#!" style={{color:'#28A745'}}>Help</a>
                 </h6>
               </div>
 
               <div className="col-md-2 mb-3">
                 <h6 className="text-uppercase font-weight-bold">
-                  <a href="#!">Contact</a>
+                  <a href="#!" style={{color:'#28A745'}}>Contact</a>
                 </h6>
               </div>
 

@@ -1,6 +1,4 @@
 import React from 'react'
-import {connect} from 'react-redux'
-import {getRestaurants} from '../redux/action/restaurant'
 import axios from 'axios'
 import {APP_URL} from '../resources/config'
 import {Link} from 'react-router-dom'
@@ -8,25 +6,31 @@ import {Link} from 'react-router-dom'
 import {Row, Container, Card, Col, CardImg, CardText,
      CardBody, CardDeck, CardHeader, Button} from 'reactstrap'
 
-class Restaurant extends React.Component{
+class Search extends React.Component{
 constructor(props){
     super(props)
     this.state = {
-
+        data: {},
+        isFetched: false
     }
 }
-    async componentDidMount(){
-    this.props.dispatch(getRestaurants())
+
+  async componentDidMount(){
+    const {data} = await axios.get(APP_URL.concat('item/search?'))
+    console.log(data)
+    this.setState({data,isFetched:!this.state.isFetched})
 }
 
 
 
     render(){
-        // const {isFetched,data} = this.state
-        return( 
+        const {isFetched,data} = this.state
+        return(
             <Container>
             <Row style={{textAlign:'center'}}>
-                {!this.props.restaurants.isLoading&& this.props.restaurants.data.map(v=>(
+                {
+                isFetched&&
+                data.data.map(v=>(
                 <CardDeck >
                     <Col  sm="12" md={{ size: 6, offset: 3 }} key= {v.id_restaurant} className='mt-4' >
                     <Card className='shadow' style = {{backgroundColor: 'dark', height:"420px", width:"300px", borderRadius:'15px' }}>
@@ -49,10 +53,4 @@ constructor(props){
         )
     }
 }
-const mapStateToProps = state => {
-    return {
-      restaurants: state.restaurants
-    }
-  }
-  
-  export default connect(mapStateToProps)(Restaurant)
+export default Search

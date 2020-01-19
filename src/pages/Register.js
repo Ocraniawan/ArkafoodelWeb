@@ -1,8 +1,11 @@
 import React from 'react'
 import Axios from 'axios'
+import {registerUser} from '../redux/action/register'
+import {connect} from 'react-redux'
 import {APP_URL} from '../resources/config'
-
-import { Container, Row, Col, Button, Label, Input, Form, FormGroup } from 'reactstrap';
+import {Link} from 'react-router-dom'
+import { Container, Row, Col, Button, Label, Input, Form, FormGroup, Card } from 'reactstrap';
+import '../resources/style.css'
 
 class Register extends React.Component{
     constructor (props){
@@ -10,19 +13,24 @@ class Register extends React.Component{
 
         this.onSubmit = this.onSubmit.bind(this);
 
-        this.state = {
+        this.state = { 
             name : "",
             username : "",
             password : "",
         }
     }
 
-
+ 
     async onSubmit (event){
       event.preventDefault();
+      const name = await this.state.name
+      const username = await this.state.username
+      const password = await this.state.password
+      await this.props.dispatch(registerUser({name, username, password}))
+      alert('Account Success Created!')
       // console.log(this.state)
-      const data = await Axios.post(APP_URL.concat('user/registuser'),this.state)
-      console.log(data)
+      // const data = await Axios.post(APP_URL.concat('user/registuser'),this.state)
+      console.log(registerUser)
       window.location = '/login'
         }
     
@@ -30,9 +38,10 @@ class Register extends React.Component{
         return(
     <Container>
     <Row>
-      <Col sm="12" md={{ size: 6, offset: 3 }}>
+    <Card className='mt-3 col-md-6 offset-md-3 shadow'  style = {{backgroundColor: 'dark', height:"450px", width:"300px", borderRadius:'15px' }}>
+      <Col >
         <Form>
-            <h3 className="h5 text-center mb-4">REGISTER</h3>
+            <h3 className="h5 text-center mt-3"><b>REGISTER</b></h3>
         <FormGroup>
           <Label className="grey-text">Name </Label>
             <Input
@@ -43,10 +52,10 @@ class Register extends React.Component{
         </FormGroup>
 
         <FormGroup>
-          <Label className="grey-text">User Name </Label>
+          <Label className="grey-text">Username </Label>
             <Input
               type="text"
-              placeholder ="Insert Your UserName"
+              placeholder ="Insert Your Username"
               value={this.state.username} onChange={(e)=>this.setState({username:e.target.value})}
             />
         </FormGroup>
@@ -62,11 +71,17 @@ class Register extends React.Component{
         </FormGroup>
 
         <FormGroup>
-        <Button onClick = {this.onSubmit} type='submit' color = 'primary' value = 'submit'>Submit</Button>
+        <Button onClick = {this.onSubmit} type='submit' className="btn btn-primary btn-block" color = 'primary' value = 'submit'>Submit</Button>
         </FormGroup>
+
+        <p className="forgot-password text-right">
+            Already registered <Link to="/login">sign in?</Link>
+        </p>
         </Form>
       </Col>
+    </Card>
     </Row>
+    <br/><br/><br/>
     {this.state.show}
   </Container>
         
@@ -75,4 +90,10 @@ class Register extends React.Component{
 
 
 }
-export default Register
+const mapStateToProps = state => {
+  return {
+    register: state.register
+  }
+}
+
+export default connect(mapStateToProps)(Register)

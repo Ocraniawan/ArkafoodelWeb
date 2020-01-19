@@ -9,7 +9,7 @@ import {
   NavbarToggler,
   NavbarBrand,
   Nav,
-  NavItem, Input,
+  NavItem, Input, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem
 } from 'reactstrap'
 import Jwt from 'jwt-decode'
 import Cookie from 'js-cookie'
@@ -28,6 +28,7 @@ class Navbar extends React.Component{
         super (props)
         this.state = {
             logout : '',
+            id : decode.id_user,
             navCollapsible: false
         }
     }
@@ -72,6 +73,23 @@ class Navbar extends React.Component{
                 <NavItem>
                 <Link className="nav-link" to="/restaurant">Restaurant</Link>
                 </NavItem>
+                <UncontrolledDropdown nav inNavbar>
+              <DropdownToggle nav caret>
+                Search By
+              </DropdownToggle>
+              <DropdownMenu right>
+                <DropdownItem>
+                <Link className="nav-link" to="/categories">Categories</Link>
+                </DropdownItem>
+                <DropdownItem>
+                <Link className="nav-link" to="/restaurant">Restaurant</Link>
+                </DropdownItem>
+                <DropdownItem divider />
+                <DropdownItem>
+                  Reset
+                </DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
                 <NavItem >
                   <Input type="text" placeholder="Search"/>
                 </NavItem>
@@ -80,7 +98,7 @@ class Navbar extends React.Component{
                 </NavItem>
               </Nav>
                 <Nav color='#28A745' > 
-                  <Link style = {{fontSize:'20px'}} className="nav-link fas fa-cart-arrow-down text-success" to="/carts"></Link>
+                  <Link style = {{fontSize:'20px'}} className="nav-link fas fa-cart-arrow-down text-success" to={`/store/${this.state.id}`}></Link>
                 </Nav>
                 <div style = {{fontSize:'30px'}}>
                 |
@@ -89,12 +107,16 @@ class Navbar extends React.Component{
                 {!token?
                 <Nav Navbar>
                   <NavItem>
+                    <Link to="/login" className="text-white">
                   <Button color="success">
-                    <Link to="/login" className="text-white">Log In </Link>
-                    </Button> &nbsp;
-                    <Button outline color="success">
-                      <Link to="/register" className="text-success">Register</Link>
+                      Log In 
                     </Button>
+                      </Link>  &nbsp;
+                      <Link to="/register" className="text-success">
+                    <Button outline color="success">
+                        Register
+                    </Button>
+                        </Link>
                   </NavItem>
                 </Nav>
                 :
