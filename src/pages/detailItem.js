@@ -1,7 +1,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {getDetailItem} from '../redux/action/menu'
-import Axios from 'axios'
+import {getCommentById } from '../redux/action/review'
+import {addToCart} from '../redux/action/cart'
 import {APP_URL} from '../resources/config'
 import {Container, Col, Card, Row, Button, CardHeader, CardDeck, Table} from 'reactstrap'
 import {Link} from 'react-router-dom'
@@ -26,6 +27,7 @@ constructor(props){
         suggess : null,
         reviewItem : null,
         quantity : 1,
+        isLoading : true,
         isFetchedDetailItem : false,
         paramsId_Item : null,
     }
@@ -33,32 +35,25 @@ constructor(props){
 /** ADD TO CARTS */
 async onSubmit(event){
     event.preventDefault();
-    const user_id = decode.id_user
-    const {id} = this.props.match.params
-    console.log(id);
-    const data = await Axios.post(APP_URL.concat(`cart/`), {
-        user_id : user_id,
-        item_id : id,
-        quantity : this.state.quantity
-    })
-    alert('Item Has been add to Cart!!')
-    console.log(data)
+    const user_id = await decode.id_user
+    const {id} = await this.props.match.params
+    const item_id = id
+    const quantity = this.state.quantity
+    console.log(user_id, item_id, quantity);
+    await this.props.dispatch(addToCart(item_id,user_id,quantity))
+    if (this.props.carts.isError) {
+        console.log(this.props.carts.isError);
+    } else{
+        alert('Item Has been add to Cart!!')
+    }
   }
 
   async componentDidMount(){
       const {id} = this.props.match.params
-    //   await this.props.dispatch(getDetailItem(id))
-
-    const url = APP_URL.concat(`item/${id}`)
-    const item = await Axios.get(url)
-    const {suggess, data} = item
-
-    const review = APP_URL.concat(`valuation/${id}`)
-    const reviews = await Axios.get(review)
-    const reviewItem = reviews.data
-
-    this.setState({data, reviewItem, isFetchedDetailItem:true, paramsId_Item:id})
-}
+      await this.props.dispatch(getDetailItem(id))
+      await this.props.dispatch(getCommentById(id))
+      this.setState({isLoading:this.props.items.isLoading})
+    }
 
 buttonMin = ()=>{
     this.setState({quantity: this.state.quantity - 1})
@@ -73,46 +68,42 @@ buttonPlus = ()=>{
 
     render(){ 
         const user_id = decode.id
-        const {isFetchedDetailItem, data, reviewItem, suggess, paramsId_Item} = this.state
-        if (paramsId_Item!==this.props.match.params.id &&paramsId_Item!=null){
-         this.componentDidMount()  
-        }
         return(
             <Container >
-                { isFetchedDetailItem &&
+                {!this.state.isLoading &&
+                this.props.items.data.map(v=>(
                     <div className='shadow mt-2' style={{display:'flex', justifyContent:'center', alignItems:'justify',flexDirection:'column', borderRadius:'15px'}}>
                         <Row>
                             <Col className='col-sm-6'>
-                                <img src={APP_URL.concat(`src/images/${data.data[0].image}`)} alt={data.name} style={{width:"290px", borderRadius:'15px'}}/>
+                                <img src={APP_URL.concat(`src/images/${v.image}`)} alt={v.name} style={{width:"290px", borderRadius:'15px'}}/>
                             </Col>
-                        
                             <Col className='col-sm-6'>
                             <CardHeader>
-                                <div style = {{textAlign:'center'}}><b> {data.data[0].item_name} </b></div>
+                                <div style = {{textAlign:'center'}}><b> {v.item_name} </b></div>
                             </CardHeader>
                                     <Table>
                                     <tbody>
                                         <tr>
                                         <th scope="row">Price</th>
                                         <td>
-                                        <NumberFormat value={data.data[0].price} displayType={'text'} thousandSeparator={true} prefix={'Rp. '} renderText={value=> <div>{value}</div>} />
+                                        <NumberFormat value={v.price} displayType={'text'} thousandSeparator={true} prefix={'Rp. '} renderText={value=> <div>{value}</div>} />
                                         </td>
                                         </tr>
                                         <tr>
                                         <th scope="row">Rating</th>
-                                        <td>{data.data[0].rating}</td>
+                                        <td>{v.rating}</td>
                                         </tr>
                                         <tr>
                                         <th scope="row">Restaurant</th>
-                                        <td>{data.data[0].restaurant_name}</td>
+                                        <td>{v.restaurant_name}</td>
                                         </tr>
                                         <tr>
                                         <th scope="row">Categories</th>
-                                        <td>{data.data[0].categories_name}</td>
+                                        <td>{v.categories_name}</td>
                                         </tr>
                                         <tr>
                                         <th scope="row">Description</th>
-                                        <td>{data.data[0].description}</td>
+                                        <td>{v.description}</td>
                                         </tr>
                                         <tr>
                                         <th scope="row">Quantity</th>
@@ -138,7 +129,7 @@ buttonPlus = ()=>{
                                         <tr>
                                         <th scope="row">Total</th>
                                         <td>
-                                            <NumberFormat value={data.data[0].price * this.state.quantity} displayType={'text'} thousandSeparator={true} prefix={'Rp. '} renderText={value=> <div>{value}</div>} />
+                                            <NumberFormat value={v.price * this.state.quantity} displayType={'text'} thousandSeparator={true} prefix={'Rp. '} renderText={value=> <div>{value}</div>} />
                                     <Container className='mt-3' style={{textAlign:'center'}}>
                                     <Link to={`/menu/`} >
                                     <Button outline color='success' className="text-success fa fa-backward">
@@ -160,7 +151,7 @@ buttonPlus = ()=>{
                             </Col>
                         </Row>
                     </div>
-                }
+                ))}
                     <Col>
                     <CardHeader>
                         Review Items
@@ -170,24 +161,25 @@ buttonPlus = ()=>{
                     <Col >
                     <div className='shadow mt-2' style={{display:'flex',justifyContent:'center', height:"278px", alignItems:'center',flexDirection:'column', borderRadius:'15px'}}>
                     <div className='col' style = {{textAlign:'center', fontSize:'20px', backgroundColor:'#F0F1F2', fontFamily:'Arial Rounded MT Bold'}}><b>Review</b></div>
-                    {isFetchedDetailItem&&
-                    reviewItem.data.map(v=>(
+                    {!this.props.reviews.isLoading && this.props.reviews.data.data.map((v, i) => { 
+                    return (
                         <Col md key= {v.id_item}>
                             <theader>
                                 <th><b> {v.username}</b></th>
                             </theader>
                             <tbody>
                             <tr>
-                                {/* <th scope="row"><b>Username : </b></th>
+                                <th scope="row"><b>Username : </b></th>
                                 <td><b> {v.username}</b></td>                                
                             </tr>
                             <tr>
-                                <th scope="row"><b>Review</b></th> */}
+                                <th scope="row"><b>Review</b></th>
                                 <td> {v.review}</td>                                
                             </tr>
                             </tbody>                                
                         </Col>
-                    ))}
+                    )}
+                    )}
                     </div>
                     </Col>
 
@@ -199,8 +191,8 @@ buttonPlus = ()=>{
                     </CardHeader>
                     </div>
                 <Row>
-                {isFetchedDetailItem&&
-                data.suggess.map(v=>(
+                {!this.props.items.isLoading && this.props.items.suggess.map((v, i) => { 
+          return (
                     <Col md key= {v.id_item} >
                     <CardDeck>
                         <Card className='shadow mt-2' style = {{backgroundColor: 'dark', height:"380px", width:"255px", borderRadius:'15px' }}>
@@ -233,7 +225,8 @@ buttonPlus = ()=>{
                     </CardDeck>
                         
                     </Col>
-                ))}
+                )}
+                )}
             </Row>
 
             </Container>
@@ -242,4 +235,12 @@ buttonPlus = ()=>{
     }
     
 }
-export default DetailItem
+const mapStateToProps = state =>{
+    return{
+        items: state.items,
+        reviews: state.reviews,
+        carts: state.carts
+    }
+  }
+  
+  export default connect(mapStateToProps)(DetailItem)

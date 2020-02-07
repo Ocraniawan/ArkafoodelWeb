@@ -118,18 +118,15 @@ nextButton = async()=>{
                             </div>
                         <Container className='mt-3'>
                             <Link to={`/item/${v.id_item}`} style = {{fontSize:'12'}}>
-                        <Button outline className="fa fa-th-list text-success" color="success" style = {{float:'left'}}>
+                        <Button outline className="fa fa-info-circle text-success" color="success" style = {{float:'left'}}>
                         </Button>
                             </Link>
                         <Button onClick = {this.onSubmit} type='submit' color="success" style = {{float:'right', fontSize:'12'}} className="fa fa-cart-plus text-white">
-                        </Button>
-                        
+                        </Button>                        
                         </Container>
                         </Card> 
-                    </CardDeck>
-                       
+                    </CardDeck>                       
                     </Col>
-
                 ))}
                 
             </Row>

@@ -33,6 +33,7 @@ const initialState = {
           }
         case 'POST_CART_FULFILLED':
           return {
+            ...state,
             data: action.payload.data.data,
           }
         default :

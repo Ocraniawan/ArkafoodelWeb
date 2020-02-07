@@ -41,7 +41,9 @@ const initialState = {
           }
         case 'GET_DETAILITEM_FULFILLED':
           return {
+
             data: action.payload.data.data,
+            suggess: action.payload.data.suggess,
           }
         case 'GET_ITEMSBUTTON_PENDING':
           return {

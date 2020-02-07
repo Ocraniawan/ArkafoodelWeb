@@ -13,7 +13,6 @@ import {
 } from 'reactstrap'
 import Jwt from 'jwt-decode'
 import Cookie from 'js-cookie'
-
 import {Link} from 'react-router-dom'
 
 const token = Cookie.get('token')
