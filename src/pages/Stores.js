@@ -92,7 +92,7 @@ render(){
                   <div className='shadow mt-2 col-sm-12' style={{display:'flex', justifyContent:'space-between', alignItems:'justify',flexDirection:'column', borderRadius:'15px', marginBottom:'20px'}}>
                   <Row>
                   <Col style={{height:'150px'}}>
-                    <img src={APP_URL.concat(`src/images/${v.image}`)} alt={ImageData.name} style={{width:"150px", borderRadius:'15px'}}/>
+                    <img src={APP_URL.concat(`src/images/${v.image}`)} alt={ImageData.name} style={{width:"100%", height:'100%', marginLeft:'-15px', borderTopLeftRadius:'15px', borderBottomLeftRadius:'15px'}}/>
                   </Col>
                     <Col style={{alignSelf:'center'}}>
                           <div style = {{textAlign:'center', fontSize:'20px'}}><b> {v.item_name} </b></div>
@@ -138,10 +138,10 @@ render(){
                 </div>
                 ))
               }
-                <Col style={{marginBottom:'20px'}}>
+                <Col sm="12" md={{ size: 6, offset: 3 }} style={{marginBottom:'20px'}}>
                         <Card body style = {{borderRadius : "15px", width:'300px'}} className = "shadow">
-                            <CardTitle className = "text-center" style={{fontSize: '25px'}}><b> Total</b></CardTitle>
-                            <hr />
+                            <CardTitle className = "text-center" style={{fontSize: '25px', height:'30px'}}><b> Total</b></CardTitle>
+                            <hr/>
                             <CardText>
                               Price : <NumberFormat value={this.state.subtotal} displayType={'text'} thousandSeparator={true} prefix={'Rp. '} renderText={value => <div>{value}</div>} />
                             </CardText>

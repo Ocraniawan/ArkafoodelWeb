@@ -65,7 +65,7 @@ class Login extends React.Component{
         </FormGroup>
 
         <FormGroup>
-        <Button onClick = {this.onSubmit} className="btn btn-primary btn-block" type='submit' color = 'primary' value = 'submit'>Submit</Button>
+        <Button onClick = {this.onSubmit} className="btn btn-success btn-block" type='submit' color = 'success' value = 'submit'>Submit</Button>
         </FormGroup>
 
         </Form>

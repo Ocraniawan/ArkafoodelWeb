@@ -71,11 +71,11 @@ class Register extends React.Component{
         </FormGroup>
 
         <FormGroup>
-        <Button onClick = {this.onSubmit} type='submit' className="btn btn-primary btn-block" color = 'primary' value = 'submit'>Submit</Button>
+        <Button onClick = {this.onSubmit} type='submit' className="btn btn-success btn-block" color = 'success' value = 'submit'>Submit</Button>
         </FormGroup>
 
         <p className="forgot-password text-right">
-            Already registered <Link to="/login">sign in?</Link>
+            Already registered <Link to="/login" className="text-success">sign in?</Link>
         </p>
         </Form>
       </Col>

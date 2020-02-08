@@ -76,7 +76,7 @@ buttonPlus = ()=>{
                 this.props.items.data.map(v=>(
                         <Row>
                             <Col xs="6" sm="4">
-                                <img src={APP_URL.concat(`src/images/${v.image}`)} alt={v.name} style={{width:"290px", borderTopLeftRadius:'15px'}}/>
+                                <img src={APP_URL.concat(`src/images/${v.image}`)} alt={v.name} style={{width:"100%", height:'100%', borderTopLeftRadius:'15px'}}/>
                             </Col>
                             <Col xs="6" sm="4" style={{width:'120%'}}>
                             <CardHeader>
