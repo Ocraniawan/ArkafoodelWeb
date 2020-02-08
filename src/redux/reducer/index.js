@@ -8,6 +8,7 @@ import login from './login'
 import register from './register'
 import categories from './categories'
 import reviews from './review'
+import search from './search'
 const appReducer = combineReducers({
   items,
   restaurants,
@@ -15,7 +16,8 @@ const appReducer = combineReducers({
   login,
   register,
   categories,
-  reviews
+  reviews,
+  search
 })
 
 export default appReducer
