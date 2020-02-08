@@ -4,7 +4,7 @@ import {getDetailItem} from '../redux/action/menu'
 import {getCommentById } from '../redux/action/review'
 import {addToCart} from '../redux/action/cart'
 import {APP_URL} from '../resources/config'
-import {Container, Col, Card, Row, Button, CardHeader, CardDeck, Table} from 'reactstrap'
+import {Container, Col, Card, Row, Button, CardHeader, CardDeck, Table, Nav, Input} from 'reactstrap'
 import {Link} from 'react-router-dom'
 import Cookie from 'js-cookie'
 import Jwt from 'jwt-decode'
@@ -71,128 +71,105 @@ buttonPlus = ()=>{
         const user_id = decode.id
         return(
             <Container >
+                <div className='shadow mt-2' style={{display:'flex', justifyContent:'center', alignItems:'justify',flexDirection:'column', borderRadius:'15px', marginBottom:'20PX'}}>
                 {!this.state.isLoading &&
                 this.props.items.data.map(v=>(
-                    <div className='shadow mt-2' style={{display:'flex', justifyContent:'center', alignItems:'justify',flexDirection:'column', borderRadius:'15px'}}>
                         <Row>
-                            <Col className='col-sm-6'>
-                                <img src={APP_URL.concat(`src/images/${v.image}`)} alt={v.name} style={{width:"290px", borderRadius:'15px'}}/>
+                            <Col xs="6" sm="4">
+                                <img src={APP_URL.concat(`src/images/${v.image}`)} alt={v.name} style={{width:"290px", borderTopLeftRadius:'15px'}}/>
                             </Col>
-                            <Col className='col-sm-6'>
+                            <Col xs="6" sm="4" style={{width:'120%'}}>
                             <CardHeader>
                                 <div style = {{textAlign:'center'}}><b> {v.item_name} </b></div>
                             </CardHeader>
                                     <Table>
                                     <tbody>
                                         <tr>
-                                        <th scope="row">Price</th>
+                                        <th scope="row" style={{color:'#B8B9BB'}}>Price</th>
                                         <td>
-                                        <NumberFormat value={v.price} displayType={'text'} thousandSeparator={true} prefix={'Rp. '} renderText={value=> <div>{value}</div>} />
+                                        <NumberFormat value={v.price} displayType={'text'} thousandSeparator={true} prefix={'Rp. '} renderText={value=> <div style={{color:'#F95A37', fontWeight:'bold'}}>{value}</div>} />
                                         </td>
                                         </tr>
                                         <tr>
-                                        <th scope="row">Rating</th>
-                                        <td>{v.rating}</td>
+                                        <th scope="row" style={{color:'#B8B9BB'}}>Rating</th>
+                                        <td>
+                                        <StartRatings rating = {v.rating} starRatedColor="#F95A37" numberOfStars={5} starDimension = "15px" starSpacing = "1px"/>
+                                        </td>
                                         </tr>
                                         <tr>
-                                        <th scope="row">Restaurant</th>
-                                        <td>{v.restaurant_name}</td>
+                                        <th scope="row" style={{color:'#B8B9BB'}}>Restaurant</th>
+                                        <td style={{fontWeight:'bold'}}>{v.restaurant_name}</td>
                                         </tr>
                                         <tr>
-                                        <th scope="row">Categories</th>
-                                        <td>{v.categories_name}</td>
-                                        </tr>
-                                        <tr>
-                                        <th scope="row">Description</th>
+                                        <th scope="row" style={{color:'#B8B9BB'}}>Description</th>
                                         <td>{v.description}</td>
-                                        </tr>
-                                        <tr>
-                                        <th scope="row">Quantity</th>
-                                        <td>
-                                        <Row>
-                                        <Col>
-                                        <Button style={{backgroundColor: '#42B549'}}
-                                            onClick={this.buttonMin}
-                                            disabled={this.state.quantity<=1?true:false} className="cold-md-5"><b>-</b>
-                                        </Button>
-                                        </Col>
-                                        <Col>
-                                        <input type="text" value={this.state.quantity} className="cold-md-2"/>
-                                        </Col>
-                                        <Col>
-                                        <Button style={{backgroundColor: '#42B549'}}
-                                            onClick={this.buttonPlus} className="cold-md-5"><b>+</b>
-                                        </Button>
-                                        </Col>
-                                        </Row>
-                                        </td>
-                                        </tr>
-                                        <tr>
-                                        <th scope="row">Total</th>
-                                        <td>
-                                            <NumberFormat value={v.price * this.state.quantity} displayType={'text'} thousandSeparator={true} prefix={'Rp. '} renderText={value=> <div>{value}</div>} />
-                                    <Container className='mt-3' style={{textAlign:'center'}}>
-                                    <Link to={`/menu/`} >
-                                    <Button outline color='success' className="text-success fa fa-backward">
-                                    </Button> 
-                                    </Link> &nbsp;
-                                    <Link to = {`/store/${user_id}`} className = 'text-light'>
-                                    <Button onClick = {this.onSubmit} type='submit' color="success" className="fa fa-cart-plus text-white">
-                                    </Button>
-                                    </Link>
-                                    </Container>
-                                        </td>
-                                        </tr>
-                                        <tr>
-                                        <td>                                                
-                                            </td>
                                         </tr>
                                     </tbody>
                                     </Table>
                             </Col>
+                            <Col  xs="6" sm="4" style={{alignSelf:'center', alignItems:"center", justifyContent: 'center'}}>
+                            <Nav style={{width: '100%', alignItems:"center", justifyContent: 'center' }}>
+                            <div className="cold-md-5">
+                            <Button
+                                color = 'success' onClick={this.buttonMin}
+                                disabled={v.quantity<=1?true:false}> <b>-</b>
+                            </Button>
+                            </div>
+                            <div key={v.item_id} className="cold-md-2">
+                            <Input style={{width: '80px',textAlign: 'center'}} value={this.state.quantity}></Input>
+                            </div>
+                            <div className="cold-md-5">
+                            <Button color = 'success' onClick={this.buttonPlus}><b>+</b></Button>
+                            </div>
+                            <div className="cold-md-5">
+                            </div> &nbsp;
+                            </Nav>
+                            <div className='mt-3' style={{width: '100%', alignItems:"center", justifyContent: 'center' }}>
+                            <NumberFormat value={v.price * this.state.quantity} displayType={'text'} thousandSeparator={true} prefix={'Rp. '} renderText={value=> <div style={{width: '100%', alignItems:"center", justifyContent: 'center', textAlign: 'center', color:"#F95A37", fontSize: 18, fontWeight:"bold" }}>{value}</div>} />
+                            </div>
+                            <Nav style={{alignItems:"center", justifyContent: 'center' }}>
+                            <div className='mt-3' >
+                            <Link to = {`/store/${user_id}`} className = 'text-light'>
+                                <Button style={{width: '150px', alignItems:"center", textAlign: 'center' }} onClick = {this.onSubmit} type='submit' color="success" className="fa fa-cart-plus text-white">
+                                
+                                </Button>
+                            </Link>
+                            </div> 
+                            </Nav>
+                            </Col>
                         </Row>
-                    </div>
                 ))}
+                </div>
+                <div className='shadow mt-2' style={{display:'flex', justifyContent:'center', alignItems:'justify',flexDirection:'column', borderRadius:'15px', marginBottom:'15'}}>
                     <Col>
-                    <CardHeader>
-                        Review Items
+                    <CardHeader style={{height:'50px'}}>
+                        <div style={{textAlign:'center', fontSize:'20px', fontWeight:'bold'}}>Costumer Reviews</div>
                     </CardHeader>
-                    </Col>
-                    <Row>
-                    <Col >
-                    <div className='shadow mt-2' style={{display:'flex',justifyContent:'center', height:"278px", alignItems:'center',flexDirection:'column', borderRadius:'15px'}}>
-                    <div className='col' style = {{textAlign:'center', fontSize:'20px', backgroundColor:'#F0F1F2', fontFamily:'Arial Rounded MT Bold'}}><b>Review</b></div>
                     {!this.props.reviews.isLoading && this.props.reviews.data.data.map((v, i) => { 
-                    return (
+                        return (
+                    <Col>
                         <Col md key= {v.id_item}>
-                            <theader>
-                                <th><b> {v.username}</b></th>
-                            </theader>
-                            <tbody>
-                            <tr>
-                                <th scope="row"><b>Username : </b></th>
-                                <td><b> {v.username}</b></td>                                
-                            </tr>
-                            <tr>
-                                <th scope="row"><b>Review</b></th>
-                                <td> {v.review}</td>                                
-                            </tr>
-                            </tbody>                                
+                    <div className='mt-2'style={{fontSize:'18px', color:'green'}} >
+                    <b>{v.name}</b>
+                    </div> 
+                <div className='mt-2' style={{color:'#FA591D'}}>
+                    <b>
+                    <StartRatings rating = {v.rating} starRatedColor="#F95A37" numberOfStars={5} starDimension = "15px" starSpacing = "1px"/>
+                    </b>
+                </div>
+                <div className='mt-2' style={{marginBottom:'10px'}} >
+                    <i>{v.review}</i>
+                    </div>
+                    <hr />
                         </Col>
-                    )}
-                    )}
-                    </div>
                     </Col>
-
-                    </Row>
-
-                    <div>
-                    <CardHeader>
-                        Items You Might be Like too..!
-                    </CardHeader>
+                    )}
+                    )}
+                    </Col>
                     </div>
-                <Row>
-                {!this.props.items.isLoading && this.props.items.suggess.map((v, i) => { 
+
+        <Row>
+        {!this.props.items.isLoading && this.props.items.suggess.map((v, i) => { 
           return (
             <CardDeck style={{justifyContent:"center"}}>
             <Col md key= {v.id_item} className='mt-3' xs="6" sm="4" >
@@ -209,7 +186,7 @@ buttonPlus = ()=>{
                 <div className='text-center mt-2' style={{color:'#FA591D'}}>
                     <b>
                     <NumberFormat value={v.price} displayType={'text'} thousandSeparator={true} prefix={'Rp. '} renderText={value=> <div>{value}</div>} />
-                    <StartRatings rating = {v.rating} starRatedColor="orange" numberOfStars={5} starDimension = "15px" starSpacing = "1px"/>
+                    <StartRatings rating = {v.rating} starRatedColor="#F95A37" numberOfStars={5} starDimension = "15px" starSpacing = "1px"/>
                     </b>
                 </div>
             <Container className='mt-3'>

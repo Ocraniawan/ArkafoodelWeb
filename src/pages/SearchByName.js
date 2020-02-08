@@ -8,6 +8,15 @@ import {searchByName} from '../redux/action/search'
 import { connect } from 'react-redux'
 import NumberFormat from 'react-number-format'
 import StartRatings from 'react-star-ratings'
+import Jwt from 'jwt-decode'
+import Cookie from 'js-cookie'
+import {addToCart} from '../redux/action/cart'
+
+const token = Cookie.get('token')
+let decode =''
+if (token) {
+  decode = Jwt(token)
+}
 
 class SearchByName extends React.Component{
     constructor(props){
@@ -15,16 +24,26 @@ class SearchByName extends React.Component{
         this.state = {
             data : {},
             name : '',
+            quantity : 1,
             isFetched : false,
             params: '',
             isLoading: false,
         }
     }
     
-    // async componentDidMount(){
-    //     await this.props.dispatch(searchByName())
-    //     this.setState({isLoading: true})
-    // }
+/** ADD TO CARTS */
+async onSubmit(id_item){
+    const user_id = await decode.id_user
+    const item_id = id_item
+    const quantity = this.state.quantity
+    console.log(user_id, item_id, quantity);
+    await this.props.dispatch(addToCart(item_id,user_id,quantity))
+    if (this.props.carts.isError) {
+        console.log(this.props.carts.isError);
+    } else{
+        alert('Item Has been add to Cart!!')
+    }
+  }
 
     getItem = async () => {
         const params = this.state.params
@@ -80,7 +99,7 @@ class SearchByName extends React.Component{
                             <Button outline className="fa fa-info-circle text-success" color="success" style = {{float:'left'}}>
                             </Button>
                                 </Link>
-                            <Button onClick = {this.onSubmit} type='submit' color="success" style = {{float:'right', fontSize:'12'}} className="fa fa-cart-plus text-white">
+                            <Button onClick = {()=>this.onSubmit(v.id_item)} type='submit' color="success" style = {{float:'right', fontSize:'12'}} className="fa fa-cart-plus text-white">
                             </Button>                        
                             </Container>
                             </Card> 
@@ -99,7 +118,8 @@ class SearchByName extends React.Component{
 
 const mapStateToProps = state =>{
     return{
-      search: state.search
+      search: state.search,
+      carts: state.carts
     }
   }
 

@@ -3,13 +3,14 @@ import {connect} from 'react-redux'
 import {getItems, getButton} from '../redux/action/menu'
 import {APP_URL} from '../resources/config'
 import {Link} from 'react-router-dom'
-import Cookie from 'js-cookie'
 import Axios from 'axios'
 import NumberFormat from 'react-number-format'
 import StartRatings from 'react-star-ratings'
 
 import {Row, Col, Container, Button, Card, CardHeader, CardDeck} from 'reactstrap'
 import Jwt from 'jwt-decode'
+import Cookie from 'js-cookie'
+import {addToCart} from '../redux/action/cart'
 
 const token = Cookie.get('token')
 let decode =''
@@ -23,20 +24,22 @@ constructor(props){
     this.onSubmit = this.onSubmit.bind(this);
     this.state = {
         isLoading : true,
+        quantity : 1,
     }
 }
-
+ 
 /** ADD TO CARTS */
-async onSubmit(event){
-    // event.preventDefault();
-    const user_id = decode.id_user
-    const {id} = this.props.match.params
-    const data = await Axios.post(APP_URL.concat('cart/'), {
-        user_id : user_id,
-        item_id : id
-    })
-    alert('Item Has been add to Cart!!')
-    console.log(data);
+async onSubmit(id_item){
+    const user_id = await decode.id_user
+    const item_id = id_item
+    const quantity = this.state.quantity
+    console.log(user_id, item_id, quantity);
+    await this.props.dispatch(addToCart(item_id,user_id,quantity))
+    if (this.props.carts.isError) {
+        console.log(this.props.carts.isError);
+    } else{
+        alert('Item Has been add to Cart!!')
+    }
   }
 
   
@@ -74,24 +77,6 @@ nextButton = async()=>{
     }
 }
 
-
-// prevButton = async()=>{
-//     const url = this.state.data.info.previous
-//     if (url){
-//         const {data} = await Axios.get(url)
-//         this.setState({data})
-//     }
-// }
-
-// nextButton = async()=>{
-//     const url = this.state.data.info.next
-//     if (url){
-//         const {data} = await Axios.get(url)
-//         this.setState({data})
-//     }
-// }
-
-
     render(){
         // const {isFetched,data} = this.state
         return(
@@ -126,7 +111,7 @@ nextButton = async()=>{
                     <Button outline className="fa fa-info-circle text-success" color="success" style = {{float:'left'}}>
                     </Button>
                         </Link>
-                    <Button onClick = {this.onSubmit} type='submit' color="success" style = {{float:'right', fontSize:'12'}} className="fa fa-cart-plus text-white">
+                    <Button onClick = {()=>this.onSubmit(v.id_item)} type='submit' color="success" style = {{float:'right', fontSize:'12'}} className="fa fa-cart-plus text-white">
                     </Button>                        
                     </Container>
                     </Card> 
@@ -151,7 +136,8 @@ nextButton = async()=>{
 
 const mapStateToProps = state => {
     return {
-      items: state.items
+      items: state.items,
+      carts: state.carts
     }
   }
   

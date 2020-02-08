@@ -6,25 +6,43 @@ import {APP_URL} from '../resources/config'
 import {Link} from 'react-router-dom'
 import NumberFormat from 'react-number-format'
 import StartRatings from 'react-star-ratings'
-
 import {Row, Col, Container, Button, Card, CardHeader, CardDeck} from 'reactstrap'
+import Jwt from 'jwt-decode'
+import Cookie from 'js-cookie'
+import {addToCart} from '../redux/action/cart'
+
+const token = Cookie.get('token')
+let decode =''
+if (token) {
+  decode = Jwt(token)
+}
 
 class DetailCategories extends React.Component{
 constructor(props){
     super(props)
     this.state = {
-
+        quantity : 1,
     }
 }
 
+/** ADD TO CARTS */
+async onSubmit(id_item){
+    const user_id = await decode.id_user
+    const item_id = id_item
+    const quantity = this.state.quantity
+    console.log(user_id, item_id, quantity);
+    await this.props.dispatch(addToCart(item_id,user_id,quantity))
+    if (this.props.carts.isError) {
+        console.log(this.props.carts.isError);
+    } else{
+        alert('Item Has been add to Cart!!')
+    }
+  }
 
   async componentDidMount(){
       console.log(this.props)
       const {id} = this.props.match.params
       this.props.dispatch(getCategoryById(id))
-    //   const url = await axios.get(APP_URL.concat(`categories/detail/${id}`))
-    //   const {data} = url
-    //   this.setState({data,isFetched:!this.state.isFetched})
 }
 
     render(){
@@ -61,7 +79,7 @@ constructor(props){
                     <Button outline className="fa fa-info-circle text-success" color="success" style = {{float:'left'}}>
                     </Button>
                         </Link>
-                    <Button onClick = {this.onSubmit} type='submit' color="success" style = {{float:'right', fontSize:'12'}} className="fa fa-cart-plus text-white">
+                    <Button onClick = {()=>this.onSubmit(v.id_item)} type='submit' color="success" style = {{float:'right', fontSize:'12'}} className="fa fa-cart-plus text-white">
                     </Button>                        
                     </Container>
                     </Card> 
@@ -76,7 +94,8 @@ constructor(props){
 
 const mapStateToProps = state => {
     return {
-      categories: state.categories
+      categories: state.categories,
+      carts: state.carts
     }
   }
   
