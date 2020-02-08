@@ -72,29 +72,25 @@ class Navbar extends React.Component{
                 <NavItem>
                 <Link className="nav-link" to="/restaurant">Restaurant</Link>
                 </NavItem>
+                <NavItem>
+                <Link className="nav-link" to="/categories">Categories</Link>
+                </NavItem>
                 <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
-                Search By
+                Search By 
               </DropdownToggle>
               <DropdownMenu right>
                 <DropdownItem>
-                <Link className="nav-link" to="/categories">Categories</Link>
+                <Link className="nav-link" to="/searchbyname">Name</Link>
                 </DropdownItem>
                 <DropdownItem>
-                <Link className="nav-link" to="/restaurant">Restaurant</Link>
+                <Link className="nav-link" to="/searchbyprice">Price</Link>
                 </DropdownItem>
-                <DropdownItem divider />
                 <DropdownItem>
-                  Reset
+                <Link className="nav-link" to="/searchbyrating">Rating</Link>
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
-                <NavItem >
-                  <Input type="text" placeholder="Search"/>
-                </NavItem>
-                  <Button type="submit" color="success" className='fa fa-search'></Button>
-                <NavItem>
-                </NavItem>
               </Nav>
                 <Nav color='#28A745' > 
                   <Link style = {{fontSize:'20px'}} className="nav-link fas fa-cart-arrow-down text-success" to={`/store/${this.state.id}`}></Link>

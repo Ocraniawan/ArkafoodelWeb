@@ -42,7 +42,7 @@ class Review extends React.Component{
         const rating = await this.state.rating
         console.log(rating,review,item_id,user_id)
         await this.props.dispatch(postComment(rating,review,item_id,user_id))
-        // window.location.reload()
+        window.location.reload()
     }
 
 
@@ -77,9 +77,6 @@ class Review extends React.Component{
         //   </CardDeck>
   )}
   </Row>
-      <FormGroup>
-      <Button onClick = {this.onSubmit} className="btn btn-primary btn-block" type='submit' color = 'primary' value = 'submit'>Submit</Button>
-      </FormGroup>
   </Container>
       )}
 }

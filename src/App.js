@@ -15,6 +15,9 @@ import Stores from './pages/Stores'
 import Categories from './pages/Categories'
 import DetailCategories from './pages/detailCategories'
 import Review from './pages/review'
+import SearchByName from './pages/SearchByName'
+import SearchByPrice from './pages/SearchByPrice'
+import SearchByRating from './pages/SearchByRating'
 
 class App extends React.Component{
   render(){
@@ -44,6 +47,15 @@ class App extends React.Component{
           </Route>
           <Route path='/review' exact>
             <Review />
+            </Route>
+          <Route path='/searchbyname' exact>
+            <SearchByName />
+          </Route>
+          <Route path='/searchbyrating' exact>
+            <SearchByRating />
+          </Route>
+          <Route path='/searchbyprice' exact>
+            <SearchByPrice />
           </Route>
           <Route path='/item/:id' exact component={DetailItem} />
           <Route path='/menurestaurant/:id' exact component={MenuRestaurant} />

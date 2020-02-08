@@ -4,6 +4,8 @@ import {connect} from 'react-redux'
 import {getCategoryById} from '../redux/action/categories'
 import {APP_URL} from '../resources/config'
 import {Link} from 'react-router-dom'
+import NumberFormat from 'react-number-format'
+import StartRatings from 'react-star-ratings'
 
 import {Row, Col, Container, Button, Card, CardHeader, CardDeck} from 'reactstrap'
 
@@ -33,37 +35,38 @@ constructor(props){
                 {!this.props.categories.isLoading && this.props.categories.data.map(v=>(
                 //     isFetched&&
                 // data.data.map(v=>(
-                    <CardDeck>
-                    <Col sm="12" md={{ size: 6, offset: 3 }} key= {v.id_item} className='mt-3' >
-                        <Card className='shadow' style = {{backgroundColor: 'dark', height:"430px", width:"300px", borderRadius:'15px' }}>
-                            <div className='text-center'>
-                                <img src= {APP_URL.concat(`src/images/${v.image}`)} alt={v.name} style={{height:"250px", width:"298px", borderRadius:'14px'}}/>   
-                            </div>
-                            <CardHeader>
-                            <div className='text-center mt-2' >
-                                <b><i>{v.item_name}</i></b>
-                            </div> 
-                            </CardHeader>
+                    <CardDeck style={{justifyContent:"center"}}>
+                    <Col md key= {v.id_item} className='mt-3' xs="6" sm="4" >
+                    <Card className='shadow' style = {{backgroundColor: 'dark', height:"385px", width:"255px", borderRadius:'15px', marginBottom:'20px'}}>
+                        <div className='text-center'>
+                            <img src= {APP_URL.concat(`src/images/${v.image}`)} alt={v.name} style={{height:"200px", width:"254px", borderRadius:'14px'}}/>   
+                        </div>
+                        <CardHeader>
+                        <div className='text-center mt-2' >
+                            <b><i>{v.item_name}</i></b>
+                        </div> 
+                        </CardHeader>
 
-                            <div className='text-center mt-2' style={{color:'#FA591D'}}>
-                                <b>Price: Rp.{v.price},00</b>
-                            </div>
-                            <div className='text-center' >
-                                <i>{ v.description}</i>
-                            </div>
-                        <Container className='mt-3'>
-                        <Button outline color="success" style = {{float:'left'}}>
-                            <Link to={`/item/${v.id_item}`} className="fa fa-th-list text-success" style = {{fontSize:'12'}}>
-                            </Link>
-                        </Button>
-                        <Button color="success" style = {{float:'right'}}>
-                            <Link to={`/item/${v.id_item}`} className="fa fa-cart-plus text-white" style = {{fontSize:'12'}}>
-                            </Link>
-                        </Button>
-                        </Container>
-                        </Card> 
-                    </Col>
-                    </CardDeck>
+                        <div className='text-center mt-2' style={{color:'#FA591D'}}>
+                            <b>
+                            <NumberFormat value={v.price} displayType={'text'} thousandSeparator={true} prefix={'Rp. '} renderText={value=> <div>{value}</div>} />
+                            <StartRatings rating = {v.rating} starRatedColor="orange" numberOfStars={5} starDimension = "15px" starSpacing = "1px"/>
+                            </b>
+                        </div>
+                        {/* <div className='text-center' >
+                            <i>{ v.description}</i>
+                        </div> */}
+                    <Container className='mt-3'>
+                        <Link to={`/item/${v.id_item}`} style = {{fontSize:'12'}}>
+                    <Button outline className="fa fa-info-circle text-success" color="success" style = {{float:'left'}}>
+                    </Button>
+                        </Link>
+                    <Button onClick = {this.onSubmit} type='submit' color="success" style = {{float:'right', fontSize:'12'}} className="fa fa-cart-plus text-white">
+                    </Button>                        
+                    </Container>
+                    </Card> 
+                </Col>
+                </CardDeck>
                 ))}
             </Row>
             </Container>
