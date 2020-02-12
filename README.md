@@ -1,7 +1,6 @@
 <h1 align='center'>Arkafoodel</h1><br/>
 
 ## Table of Contents
-
 - [Introduction](#introduction)
 - [Features](#features)
 - [Requirements](#requirements)
